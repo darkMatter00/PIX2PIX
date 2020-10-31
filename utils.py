@@ -1,7 +1,6 @@
 import os
 
 import tensorflow as tf
-from tensorflow.keras import Model, Sequential, layers
 
 
 def get_tpu_strategy(list_tpus=True):
@@ -17,3 +16,8 @@ def get_tpu_strategy(list_tpus=True):
             print('\t',tpu)
     strategy = tf.distribute.experimental.TPUStrategy(tpu_resolver)
     return strategy
+
+def crop(inp_img, real_img, crop_shape):
+  img_stack  = tf.stack([inp_img, real_img], axis=0)
+  crop_img = tf.image.random_crop(img_stack, size=[2, *crop_shape])
+  return crop_img[0], crop_img[1]
